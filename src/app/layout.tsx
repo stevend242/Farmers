@@ -1,5 +1,5 @@
 import { ClerkProvider } from '@clerk/nextjs';
-import { ShadcnProvider } from '@shadcn/ui';
+
 import '~/styles/globals.css';
 import { TRPCReactProvider } from '~/trpc/react';
 
@@ -14,9 +14,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <ClerkProvider>
       <html lang="en">
         <body>
-          <ShadcnProvider>
             <TRPCReactProvider>{children}</TRPCReactProvider>
-          </ShadcnProvider>
         </body>
       </html>
     </ClerkProvider>

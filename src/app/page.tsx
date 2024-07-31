@@ -61,7 +61,7 @@ import { Testimonials } from './_components/Testimonials';
 export default function HomePage() {
   return (
     <div>
-      <HeroSection />
+      {/* <HeroSection /> */}
       <FarmerOfTheDay />
       <MostSellingCrops />
       <LatestNews />

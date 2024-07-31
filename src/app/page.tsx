@@ -52,7 +52,6 @@
 //   );
 // }
 
-
 import { FarmerOfTheDay } from './_components/FarmerOfTheDay';
 import { HeroSection } from './_components/HeroSection';
 import { LatestNews } from './_components/LatestNews';

@@ -15,7 +15,7 @@ export default function Page() {
     return response.replace(/\*+/g, '');
   };
 
-  const handleSendMessage = async (e) => {
+  const handleSendMessage = async (e: any) => {
     e.preventDefault();
     const message = e.target.message.value;
     setMessages([...messages, { user: true, text: message }]);
@@ -30,9 +30,9 @@ export default function Page() {
     }
   };
 
-  const handleAiResponse = (response) => {
+  const handleAiResponse = (response: any) => {
     if (response) {
-      setMessages((prevMessages) => [
+      setMessages((prevMessages: any) => [
         ...prevMessages,
         { user: false, text: response },
       ]);

@@ -4,14 +4,22 @@ import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Badge } from "~/components/ui/badge";
 import { Award, Calendar, MapPin } from 'lucide-react';
 
+interface Certificate {
+  id: number;
+  product: string;
+  issueDate: string;
+  region: string;
+  status: string;
+}
+
 export default function Page() {
-  const [certificates, setCertificates] = useState(null);
+  const [certificates, setCertificates] = useState<Certificate[] | null>(null);
 
   useEffect(() => {
     // Simulating fetching user's GI certificates
     const fetchCertificates = async () => {
       // In a real application, replace this with an actual API call
-      const mockCertificates = [
+      const mockCertificates: Certificate[] = [
         { id: 1, product: "Darjeeling Tea", issueDate: "2022-05-15", region: "West Bengal", status: "Active" },
         { id: 2, product: "Alphonso Mango", issueDate: "2023-01-10", region: "Maharashtra", status: "Active" },
         { id: 3, product: "Chanderi Fabric", issueDate: "2021-11-30", region: "Madhya Pradesh", status: "Expiring Soon" },
@@ -22,7 +30,7 @@ export default function Page() {
     fetchCertificates();
   }, []);
 
-  const getStatusColor = (status) => {
+  const getStatusColor = (status: string): string => {
     switch (status) {
       case "Active": return "bg-green-500";
       case "Expiring Soon": return "bg-yellow-500";

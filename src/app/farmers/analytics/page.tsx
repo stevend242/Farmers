@@ -1,17 +1,32 @@
-"use client"
+"use client";
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "~/components/ui/card";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { ArrowUpRight, ArrowDownRight, Users, ShoppingCart, DollarSign } from 'lucide-react';
+import { ArrowUpRight, ArrowDownRight, Users, ShoppingCart } from 'lucide-react';
+
+interface SalesData {
+  name: string;
+  sales: number;
+}
+
+interface Data {
+  weeklyRevenue: number;
+  weeklyGrowth: number;
+  monthlyRevenue: number;
+  monthlyGrowth: number;
+  totalCustomers: number;
+  customerGrowth: number;
+  totalOrders: number;
+  orderGrowth: number;
+  salesData: SalesData[];
+}
 
 export default function Page() {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<Data | null>(null);
 
   useEffect(() => {
-    // Simulating data fetch
     const fetchData = async () => {
-      // Replace this with actual API call in a real application
-      const mockData = {
+      const mockData: Data = {
         weeklyRevenue: 1329,
         weeklyGrowth: 25,
         monthlyRevenue: 5329,
@@ -28,7 +43,7 @@ export default function Page() {
           { name: 'Fri', sales: 1890 },
           { name: 'Sat', sales: 2390 },
           { name: 'Sun', sales: 3490 },
-        ]
+        ],
       };
       setData(mockData);
     };
@@ -120,5 +135,5 @@ export default function Page() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

@@ -71,7 +71,7 @@ export function Cart() {
   )
 }
 
-function TrashIcon(props) {
+function TrashIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}

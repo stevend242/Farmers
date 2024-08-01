@@ -4,14 +4,22 @@ import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Badge } from "~/components/ui/badge";
 import { ShoppingBag, Calendar, DollarSign, User } from 'lucide-react';
 
+type Order = {
+  id: number;
+  customer: string;
+  date: string;
+  total: number;
+  status: string;
+};
+
 export default function Page() {
-  const [orders, setOrders] = useState(null);
+  const [orders, setOrders] = useState<Order[] | null>(null);
 
   useEffect(() => {
     // Simulate fetching orders from an API
     const fetchOrders = async () => {
       // In a real application, replace this with an actual API call
-      const mockOrders = [
+      const mockOrders: Order[] = [
         { id: 1, customer: "John Doe", date: "2023-08-01", total: 125.99, status: "Delivered" },
         { id: 2, customer: "Jane Smith", date: "2023-08-02", total: 79.50, status: "Processing" },
         { id: 3, customer: "Bob Johnson", date: "2023-08-03", total: 199.99, status: "Shipped" },
@@ -27,7 +35,7 @@ export default function Page() {
     fetchOrders();
   }, []);
 
-  const getStatusColor = (status) => {
+  const getStatusColor = (status: string): string => {
     switch (status) {
       case "Delivered": return "bg-green-500";
       case "Processing": return "bg-blue-500";

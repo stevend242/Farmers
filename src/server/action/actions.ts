@@ -1,5 +1,5 @@
 "use server";
-import { GoogleGenerativeAI} from "@google/generative-ai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 
 export async function fetchFruits() {
@@ -18,9 +18,9 @@ export async function fetchFruits() {
 }
 
 const genAI = new GoogleGenerativeAI("AIzaSyAcODqO3muGpih3AISgU4Dr7hZfFm3GWqU");
-export async function askAi(prompt) {
+export async function askAi(prompt: string) {
   // For text-only input, use the gemini-pro model
-  const model = genAI.getGenerativeModel({ model: "gemini-pro"});
+  const model = genAI.getGenerativeModel({ model: "gemini-pro" });
   const result = await model.generateContent(prompt);
   const response = await result.response;
   const text = response.text();

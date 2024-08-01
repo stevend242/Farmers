@@ -1,18 +1,28 @@
-"use client"
-import { MoreHorizontal, PlusCircle } from "lucide-react"
-import Image from "next/image"
-import { useState } from "react"
-import { Button } from "~/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card"
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "~/components/ui/dialog"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "~/components/ui/dropdown-menu"
-import { Input } from "~/components/ui/input"
-import { Label } from "~/components/ui/label"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table"
+"use client";
+import { MoreHorizontal, PlusCircle } from "lucide-react";
+import Image from "next/image";
+import { useState, ChangeEvent } from "react";
+import { Button } from "~/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "~/components/ui/dialog";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "~/components/ui/dropdown-menu";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
+
+interface Product {
+  name: string;
+  description: string;
+  price: string;
+  stock: string;
+  unit: string;
+  expiry: string;
+  yield: string;
+  image: string;
+}
 
 export default function Page() {
-
-  const initialData = [
+  const initialData: Product[] = [
     {
       name: "Organic Tomatoes",
       description: "Fresh, locally grown organic tomatoes",
@@ -64,43 +74,50 @@ export default function Page() {
       image: "https://images.unsplash.com/photo-1550583724-b2692b85b150?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80",
     },
   ];
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [price, setPrice] = useState('');
-  const [stock, setStock] = useState('');
-  const [unit, setUnit] = useState('');
-  const [expiry, setExpiry] = useState('');
-  const [yield1, setYield] = useState('');
-  const [img, setImg] = useState(null);
-  const [data, setData] = useState(initialData);
+
+  const [name, setName] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
+  const [price, setPrice] = useState<string>('');
+  const [stock, setStock] = useState<string>('');
+  const [unit, setUnit] = useState<string>('');
+  const [expiry, setExpiry] = useState<string>('');
+  const [yield1, setYield] = useState<string>('');
+  const [img, setImg] = useState<File | null>(null);
+  const [data, setData] = useState<Product[]>(initialData);
 
   const handleSubmit = () => {
-    // Create a new product object
-    const newProduct = {
-      name,
-      description,
-      price,
-      stock,
-      unit,
-      expiry,
-      yield: yield1,
-      image: URL.createObjectURL(img),
-    };
+    if (img) {
+      const newProduct: Product = {
+        name,
+        description,
+        price,
+        stock,
+        unit,
+        expiry,
+        yield: yield1,
+        image: URL.createObjectURL(img),
+      };
 
-    // Add the new product to the existing data
-    setData([...data, newProduct]);
+      setData([...data, newProduct]);
 
-    // Clear the form fields
-    setName('');
-    setDescription('');
-    setPrice('');
-    setStock('');
-    setUnit('');
-    setExpiry('');
-    setYield('');
-    setImg(null);
+      setName('');
+      setDescription('');
+      setPrice('');
+      setStock('');
+      setUnit('');
+      setExpiry('');
+      setYield('');
+      setImg(null);
+    }
   };
 
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const file = e.target.files[0];
+      if(file!==undefined)
+      setImg(file);
+    }
+  };
   return (
     <div className="flex gap-2 flex-col">
       <div className="flex items-center">
@@ -183,7 +200,7 @@ export default function Page() {
                     id="img"
                     type="file"
                     className="col-span-3"
-                    onChange={(e) => setImg(e.target.files[0])} // Capture the selected file
+                    onChange={handleFileChange}
                   />
                 </div>
                 <div className="grid grid-cols-4 items-center gap-4">
@@ -280,7 +297,7 @@ export default function Page() {
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan="7" className="text-center">
+                  <TableCell colSpan={7} className="text-center">
                     No products found
                   </TableCell>
                 </TableRow>

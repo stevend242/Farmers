@@ -1,18 +1,43 @@
-"use client"
+"use client";
 
-import Link from 'next/link'
-import { useEffect, useState } from 'react'
-import { Button } from "~/components/ui/button"
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { Button } from "~/components/ui/button";
 
-export default function Page({ params }) {
-  const id = params.slug
-  console.log(params)
-  const [product, setProduct] = useState(null)
-  const [quantity, setQuantity] = useState(1)
+interface Product {
+  id: string;
+  name: string;
+  price: string;
+  pricePerUnit: string;
+  description: string;
+  image: string;
+  category: string;
+  subcategory: string;
+  rating: number;
+  reviews: number;
+  origin: string;
+  nutritionFacts: {
+    [key: string]: string | number;
+  };
+  ripeness: string[];
+  organicCertified: boolean;
+  inStock: boolean;
+}
+
+interface PageProps {
+  params: {
+    slug: string;
+  };
+}
+
+export default function Page({ params }: PageProps) {
+  const id = params.slug;
+  const [product, setProduct] = useState<Product | null>(null);
+  const [quantity, setQuantity] = useState<number>(1);
 
   useEffect(() => {
     if (id === 'banana') {
-      const bananaProduct = {
+      const bananaProduct: Product = {
         id: 'banana',
         name: "Fresh Organic Bananas",
         price: "$0.99",
@@ -35,18 +60,18 @@ export default function Page({ params }) {
         ripeness: ['Green', 'Yellow', 'Spotted'],
         organicCertified: true,
         inStock: true
-      }
-      setProduct(bananaProduct)
+      };
+      setProduct(bananaProduct);
     }
-  }, [id])
+  }, [id]);
 
   if (!product) {
-    return <div>Loading...</div>
+    return <div>Loading...</div>;
   }
 
-  const handleQuantityChange = (amount) => {
-    setQuantity(Math.max(1, quantity + amount))
-  }
+  const handleQuantityChange = (amount: number) => {
+    setQuantity(Math.max(1, quantity + amount));
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -59,7 +84,9 @@ export default function Page({ params }) {
         </div>
         <div>
           <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
-          <p className="text-2xl font-semibold text-green-600 mb-1">{product.price} <span className="text-sm text-gray-500">{product.pricePerUnit}</span></p>
+          <p className="text-2xl font-semibold text-green-600 mb-1">
+            {product.price} <span className="text-sm text-gray-500">{product.pricePerUnit}</span>
+          </p>
           <p className="text-gray-600 mb-4">{product.description}</p>
           <div className="mb-4">
             <span className="bg-green-100 text-green-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">
@@ -80,8 +107,7 @@ export default function Page({ params }) {
               {[...Array(5)].map((_, i) => (
                 <StarIcon
                   key={i}
-                  className={`h-5 w-5 ${i < Math.floor(product.rating) ? 'text-yellow-400' : 'text-gray-300'
-                    }`}
+                  filled={i < Math.floor(product.rating)}
                 />
               ))}
             </div>
@@ -120,24 +146,28 @@ export default function Page({ params }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-function StarIcon(props) {
+interface StarIconProps {
+  filled: boolean;
+}
+
+function StarIcon({ filled }: StarIconProps) {
   return (
     <svg
-      {...props}
       xmlns="http://www.w3.org/2000/svg"
       width="24"
       height="24"
       viewBox="0 0 24 24"
-      fill="currentColor"
+      fill={filled ? "currentColor" : "none"}
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
+      className={filled ? "text-yellow-400" : "text-gray-300"}
     >
       <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
     </svg>
-  )
+  );
 }

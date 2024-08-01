@@ -1,45 +1,43 @@
 "use client"
+import { CornerDownLeft } from "lucide-react";
+import { useState } from "react";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
-
 import { Label } from "~/components/ui/label";
 import { Textarea } from "~/components/ui/textarea";
 import { askAi } from "~/server/action/actions";
-import { CornerDownLeft, Mic, Paperclip } from "lucide-react";
-import { useState } from "react";
-
-
 
 export default function Page() {
   const [messages, setMessages] = useState([]);
 
+  const sanitizeResponse = (response) => {
+    // Simple filter to remove inappropriate content
+    return response.replace(/\*+/g, '');
+  };
 
-
-  const handleSendMessage = async (e) => { // Made async to handle promises
+  const handleSendMessage = async (e) => {
     e.preventDefault();
     const message = e.target.message.value;
     setMessages([...messages, { user: true, text: message }]);
-    e.target.message.value = ""; // Clear input field
+    e.target.message.value = "";
 
     try {
-      const response = await askAi(message);
-      console.log(response) // Wait for response from askAi
-      handleAiResponse(response);
+      const response = await askAi(`This AI chatbot is meant for farmers. Please provide information or responses relevant to farmers.\n\n${message}`);
+      const sanitizedResponse = sanitizeResponse(response);
+      handleAiResponse(sanitizedResponse);
     } catch (error) {
       console.error("Error sending message to AI:", error);
-      // Handle errors gracefully (e.g., display an error message to the user)
     }
   };
 
   const handleAiResponse = (response) => {
-    if (response) { // Check if response exists before using it
-      setMessages([
-        ...messages, // Add user message
-        { user: false, text: response }, // Add AI response
+    if (response) {
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { user: false, text: response },
       ]);
-      console.log(messages)
     }
-  }
+  };
 
   return (
     <>
@@ -47,14 +45,14 @@ export default function Page() {
         <Badge variant="outline" className="absolute right-3 top-3">
           Ask AI
         </Badge>
-        <div className="flex-1 overflow-y-auto pt-4"> {/* Chat history container */}
-          {messages.map((message) => (
-            <div key={message.text} className={message.user ? "bg-green-600 text-white py-2 px-4 rounded-lg mb-2" : "bg-blue-600 text-white py-2 px-4 rounded-lg mb-2"}>
+        <div className="flex-1 overflow-y-auto pt-4">
+          {messages.map((message, index) => (
+            <div key={index} className={message.user ? "bg-green-600 text-white py-2 px-4 rounded-lg mb-2" : "bg-blue-600 text-white py-2 px-4 rounded-lg mb-2"}>
               {message.text}
             </div>
           ))}
         </div>
-        <form onSubmit={handleSendMessage} className="relative overflow-hidden rounded-lg border bg-background focus-within:ring-1 focus-within:ring-ring" x-chunk="dashboard-03-chunk-1">
+        <form onSubmit={handleSendMessage} className="relative overflow-hidden rounded-lg border bg-background focus-within:ring-1 focus-within:ring-ring">
           <Label htmlFor="message" className="sr-only">
             Message
           </Label>

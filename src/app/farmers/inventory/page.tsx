@@ -1,43 +1,14 @@
 "use client"
+import { MoreHorizontal, PlusCircle } from "lucide-react"
 import Image from "next/image"
-import Link from "next/link"
-import {
-  MoreHorizontal,
-  PlusCircle,
-} from "lucide-react"
+import { useState } from "react"
 import { Button } from "~/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "~/components/ui/card"
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card"
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "~/components/ui/dialog"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "~/components/ui/dropdown-menu"
 import { Input } from "~/components/ui/input"
-import { Sheet, SheetContent, SheetTrigger } from "~/components/ui/sheet"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "~/components/ui/table"
-import { Dialog, DialogClose, DialogTitle, DialogContent, DialogTrigger, DialogHeader, DialogDescription, DialogFooter } from "~/components/ui/dialog"
 import { Label } from "~/components/ui/label"
-import { useUser } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table"
 
 export default function Page() {
   const [name, setName] = useState('');
@@ -48,12 +19,34 @@ export default function Page() {
   const [expiry, setExpiry] = useState('');
   const [yield1, setYield] = useState('');
   const [img, setImg] = useState(null);
-  const [data, setdata] = useState(null);
+  const [data, setData] = useState([]);
 
-  // To store the selected image file
-  const router = useRouter();
+  const handleSubmit = () => {
+    // Create a new product object
+    const newProduct = {
+      name,
+      description,
+      price,
+      stock,
+      unit,
+      expiry,
+      yield: yield1,
+      image: URL.createObjectURL(img),
+    };
 
+    // Add the new product to the existing data
+    setData([...data, newProduct]);
 
+    // Clear the form fields
+    setName('');
+    setDescription('');
+    setPrice('');
+    setStock('');
+    setUnit('');
+    setExpiry('');
+    setYield('');
+    setImg(null);
+  };
 
   return (
     <div className="flex gap-2 flex-col">
@@ -137,7 +130,7 @@ export default function Page() {
                     id="img"
                     type="file"
                     className="col-span-3"
-                    onChange={(e) => { setImg(e.target.files[0]), console.log(e.target.files) }} // Capture the selected file
+                    onChange={(e) => setImg(e.target.files[0])} // Capture the selected file
                   />
                 </div>
                 <div className="grid grid-cols-4 items-center gap-4">
@@ -147,6 +140,7 @@ export default function Page() {
                   <Input
                     id="Expiry"
                     type="date"
+                    value={expiry}
                     onChange={(e) => setExpiry(e.target.value)}
                     className="col-span-3"
                   />
@@ -158,28 +152,26 @@ export default function Page() {
                   <Input
                     id="Yield"
                     type="date"
-                    className="col-span-3"
+                    value={yield1}
                     onChange={(e) => setYield(e.target.value)}
+                    className="col-span-3"
                   />
                 </div>
               </div>
               <DialogFooter>
                 <DialogClose>
-                  <Button onClick={() => handleSubmit()}>Save changes</Button>
+                  <Button onClick={handleSubmit}>Save changes</Button>
                 </DialogClose>
               </DialogFooter>
             </DialogContent>
           </Dialog>
-
         </div>
       </div>
 
       <Card x-chunk="dashboard-06-chunk-0" className="max-h-full flex-1 overflow-y-auto">
         <CardHeader>
           <CardTitle>Products</CardTitle>
-          <CardDescription>
-            Manage your products.
-          </CardDescription>
+          <CardDescription>Manage your products.</CardDescription>
         </CardHeader>
         <CardContent>
           <Table className="max-h-screen">
@@ -189,31 +181,20 @@ export default function Page() {
                   <span className="sr-only">Image</span>
                 </TableHead>
                 <TableHead>Name</TableHead>
-                <TableHead className="hidden md:table-cell">
-                  Stock
-                </TableHead>
-                <TableHead className="hidden md:table-cell">
-                  Price
-                </TableHead>
-                <TableHead className="hidden md:table-cell">
-                  Expiry
-                </TableHead>
-                <TableHead className="hidden md:table-cell">
-                  Yield
-                </TableHead>
-
+                <TableHead className="hidden md:table-cell">Stock</TableHead>
+                <TableHead className="hidden md:table-cell">Price</TableHead>
+                <TableHead className="hidden md:table-cell">Expiry</TableHead>
+                <TableHead className="hidden md:table-cell">Yield</TableHead>
                 <TableHead>
                   <span className="sr-only">Actions</span>
                 </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data ? (
+              {data.length > 0 ? (
                 data.map((item, idx) => (
-                  <TableRow>
-
+                  <TableRow key={idx}>
                     <TableCell className="hidden sm:table-cell">
-
                       <Image
                         alt="Product image"
                         className="aspect-square shadow-md rounded-md object-cover"
@@ -222,29 +203,15 @@ export default function Page() {
                         width="64"
                       />
                     </TableCell>
-                    <TableCell className="font-medium">
-                      {item.name}
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell">
-                      {item.stock}
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell">
-                      ₹{item.price}
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell">
-                      {item.expiry}
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell">
-                      {item.yield}
-                    </TableCell>
+                    <TableCell className="font-medium">{item.name}</TableCell>
+                    <TableCell className="hidden md:table-cell">{item.stock}</TableCell>
+                    <TableCell className="hidden md:table-cell">₹{item.price}</TableCell>
+                    <TableCell className="hidden md:table-cell">{item.expiry}</TableCell>
+                    <TableCell className="hidden md:table-cell">{item.yield}</TableCell>
                     <TableCell>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button
-                            aria-haspopup="true"
-                            size="icon"
-                            variant="ghost"
-                          >
+                          <Button aria-haspopup="true" size="icon" variant="ghost">
                             <MoreHorizontal className="h-4 w-4" />
                             <span className="sr-only">Toggle menu</span>
                           </Button>
@@ -257,13 +224,18 @@ export default function Page() {
                       </DropdownMenu>
                     </TableCell>
                   </TableRow>
-                ))) : (<div>Loading..</div>)}
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan="7" className="text-center">
+                    No products found
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </CardContent>
       </Card>
-
-
     </div>
-  )
+  );
 }

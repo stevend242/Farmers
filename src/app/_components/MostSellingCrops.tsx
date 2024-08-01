@@ -1,15 +1,28 @@
-export const MostSellingCrops = () => (
-    <div className="p-8">
-      <h2 className="text-2xl font-bold">Seasons Most Selling Crops</h2>
-      <div className="mt-4 grid grid-cols-3 gap-4">
-        {/* Example Crop */}
-        <div className="border p-4">
-          <img src="/path/to/crop.jpg" alt="Crop" className="w-full h-32 object-cover" />
-          <h3 className="mt-2 text-lg font-bold">Crop Name</h3>
-          <p className="mt-1">Description of the crop...</p>
-        </div>
-        {/* Add more crops similarly */}
-      </div>
-    </div>
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import { Carousel } from "~/components/ui/carousel";
+
+export function MostSellingCrops() {
+  return (
+    <Card className="mt-8">
+      <CardHeader>
+        <CardTitle className="text-2xl font-bold">Most Selling Crops</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Carousel>
+          <div className="carousel-item">
+            <img src="/crop1.jpg" alt="Crop 1" />
+            <p className="mt-2 text-center">Tomatoes</p>
+          </div>
+          <div className="carousel-item">
+            <img src="/crop2.jpg" alt="Crop 2" />
+            <p className="mt-2 text-center">Potatoes</p>
+          </div>
+          <div className="carousel-item">
+            <img src="/crop3.jpg" alt="Crop 3" />
+            <p className="mt-2 text-center">Carrots</p>
+          </div>
+        </Carousel>
+      </CardContent>
+    </Card>
   );
-  
+}

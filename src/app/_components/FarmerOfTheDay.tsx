@@ -1,13 +1,20 @@
-export const FarmerOfTheDay = () => (
-    <div className="p-8">
-      <h2 className="text-2xl font-bold">Farmer of the Day</h2>
-      <div className="mt-4 flex items-center">
-        <img src="/path/to/farmer.jpg" alt="Farmer" className="w-24 h-24 rounded-full" />
-        <div className="ml-4">
-          <h3 className="text-xl">John Doe</h3>
-          <p>John has been a dedicated farmer for over 20 years...</p>
+import { Avatar } from "~/components/ui/avatar";
+import { Badge } from "~/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+
+export function FarmerOfTheDay() {
+  return (
+    <Card className="mt-8">
+      <CardHeader>
+        <CardTitle className="text-2xl font-bold">Farmer of the Day</CardTitle>
+      </CardHeader>
+      <CardContent className="flex items-center">
+        <Avatar className="mr-4" src="/farmer.jpg" alt="Farmer of the Day" />
+        <div>
+          <h3 className="text-xl font-semibold">John Doe</h3>
+          <Badge className="mt-2" variant="success">Top Producer</Badge>
         </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
-  
+}

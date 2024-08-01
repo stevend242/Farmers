@@ -9,6 +9,7 @@ import {
   Package2,
   PanelLeft,
   ShoppingCart,
+  Tag,
   User,
 } from "lucide-react"
 
@@ -68,6 +69,10 @@ export default function SideLayout({ children }: SideLayoutProps) {
       href: '/farmers/price',
       label: 'Price Estimation',
       icon: <DollarSign className="h-4 w-4" />,
+    }, {
+      href: '/farmers/gitag',
+      label: 'GI Tag',
+      icon: <Tag className="h-4 w-4" />,
     },
   ];
 

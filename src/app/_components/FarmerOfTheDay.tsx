@@ -1,7 +1,7 @@
+import { Award, MapPin, Star } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Badge } from "~/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
-import { Star, Award, MapPin } from "lucide-react";
 
 export function FarmerOfTheDay() {
   return (
@@ -19,10 +19,10 @@ export function FarmerOfTheDay() {
             <AvatarFallback>JD</AvatarFallback>
           </Avatar>
           <div className="md:ml-6 mt-4 md:mt-0 text-center md:text-left">
-            <h3 className="text-2xl font-semibold">John Doe</h3>
+            <h3 className="text-2xl font-semibold">Balaji Rao</h3>
             <p className="text-gray-600 mt-1 flex items-center justify-center md:justify-start">
               <MapPin className="w-4 h-4 mr-1" />
-              Sunny Valley Farm, California
+              Pune, Maharashtra
             </p>
             <div className="mt-2 flex flex-wrap justify-center md:justify-start gap-2">
               <Badge variant="secondary" className="flex items-center">

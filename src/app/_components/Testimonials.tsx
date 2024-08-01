@@ -1,18 +1,18 @@
+import { Quote } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
-import { Quote } from 'lucide-react';
 
 export function Testimonials() {
   const testimonials = [
     {
-      name: "Jane Smith",
+      name: "Sneha Joshi",
       avatar: "/user1.jpg",
       initials: "JS",
       quote: "This platform has revolutionized the way I sell my produce.",
       role: "Organic Vegetable Farmer"
     },
     {
-      name: "Robert Brown",
+      name: "Krishnan Iyer",
       avatar: "/user2.jpg",
       initials: "RB",
       quote: "The real-time market prices and weather updates are game changers.",

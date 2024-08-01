@@ -1,10 +1,8 @@
-import { Info, ShoppingCart } from 'lucide-react';
-import Image from "next/image";
-import { Button } from "~/components/ui/button";
-import Image from "next/image";
-import { ShoppingCart, Info } from 'lucide-react';
 import { DashIcon } from "@radix-ui/react-icons";
+import { ShoppingCart } from 'lucide-react';
+import Image from "next/image";
 import Link from "next/link";
+import { Button } from "~/components/ui/button";
 
 export function HeroSection() {
 

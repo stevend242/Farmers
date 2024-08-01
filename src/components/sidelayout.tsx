@@ -1,6 +1,4 @@
 "use client"
-import React from "react";
-import Link from "next/link"
 import {
   DollarSign,
   LineChart,
@@ -11,7 +9,8 @@ import {
   ShoppingCart,
   Tag,
   User,
-} from "lucide-react"
+} from "lucide-react";
+import Link from "next/link";
 
 import {
   Breadcrumb,
@@ -20,15 +19,15 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "~/components/ui/breadcrumb"
-import { Button } from "~/components/ui/button"
+} from "~/components/ui/breadcrumb";
+import { Button } from "~/components/ui/button";
 
 
 
-import { Sheet, SheetTrigger } from "~/components/ui/sheet"
-import { usePathname, useRouter } from "next/navigation"
-import { ReactNode } from "react"
 import { SignUpButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { usePathname, useRouter } from "next/navigation";
+import { ReactNode } from "react";
+import { Sheet, SheetTrigger } from "~/components/ui/sheet";
 
 interface SideLayoutProps {
   children: ReactNode;

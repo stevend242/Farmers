@@ -1,7 +1,7 @@
 "use client"
 
-import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 import { Button } from "~/components/ui/button"
 
 export default function Page({ params }) {

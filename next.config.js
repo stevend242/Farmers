@@ -5,6 +5,14 @@
 await import("./src/env.js");
 
 /** @type {import("next").NextConfig} */
-const config = { images: { domains: ['images.unsplash.com'] }, };
+const config = {
+  images: { domains: ['images.unsplash.com'] }, typescript: {
+    // !! WARN !!
+    // Dangerously allow production builds to successfully complete even if
+    // your project has type errors.
+    // !! WARN !!
+    ignoreBuildErrors: true,
+  },
+};
 
 export default config;

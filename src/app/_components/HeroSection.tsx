@@ -1,8 +1,14 @@
 import { Info, ShoppingCart } from 'lucide-react';
 import Image from "next/image";
 import { Button } from "~/components/ui/button";
+import Image from "next/image";
+import { ShoppingCart, Info } from 'lucide-react';
+import { DashIcon } from "@radix-ui/react-icons";
+import Link from "next/link";
 
 export function HeroSection() {
+
+
   const productCategories = [
     { src: "https://images.unsplash.com/photo-1518843875459-f738682238a6?auto=format&fit=crop&w=300&q=80", alt: "Fresh Vegetables" },
     { src: "https://images.unsplash.com/photo-1619566636858-adf3ef46400b?auto=format&fit=crop&w=300&q=80", alt: "Juicy Fruits" },
@@ -29,10 +35,16 @@ export function HeroSection() {
         </p>
         <div className="flex space-x-4">
           <Button size="lg" className="bg-green-600 hover:bg-green-700 text-white">
-            <ShoppingCart className="mr-2 h-5 w-5" /> Shop Now
+            <ShoppingCart className="mr-2 h-5 w-5" />
+            <Link href="/marketplace">
+              Shop Now
+            </Link>
           </Button>
           <Button size="lg" variant="outline" className="text-white border-white hover:bg-white text-green-600">
-            <Info className="mr-2 h-5 w-5" /> Learn More
+            <DashIcon className="mr-2 h-5 w-5" />
+            <Link href="/farmers">
+              Dashboard
+            </Link>
           </Button>
         </div>
       </div>

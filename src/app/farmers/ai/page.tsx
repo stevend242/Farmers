@@ -10,7 +10,7 @@ import { askAi } from "~/server/action/actions";
 export default function Page() {
   const [messages, setMessages] = useState([]);
 
-  const sanitizeResponse = (response) => {
+  const sanitizeResponse = (response: string) => {
     // Simple filter to remove inappropriate content
     return response.replace(/\*+/g, '');
   };

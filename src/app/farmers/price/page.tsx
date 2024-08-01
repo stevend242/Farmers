@@ -1,59 +1,121 @@
+"use client"
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
-import { fetchFruits } from "~/server/action/actions";
+import { Input } from "~/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
+import { Button } from "~/components/ui/button";
+import { ArrowRight, TrendingUp, DollarSign } from 'lucide-react';
 
-export default async function Page() {
-  let pricedata;
-  
-  try {
-    pricedata = await fetchFruits();
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    pricedata = []; // Assign an empty array in case of error
-  }
+export default function Page() {
+  const [productType, setProductType] = useState("");
+  const [productName, setProductName] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [unit, setUnit] = useState("kg");
+  const [estimatedPrice, setEstimatedPrice] = useState(null);
+  const [marketTrend, setMarketTrend] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  if (!Array.isArray(pricedata)) {
-    console.error("Expected an array but got:", pricedata);
-    pricedata = []; // Assign an empty array if the fetched data is not an array
-  }
+  const handleEstimate = async () => {
+    setLoading(true);
+    // In a real application, this would be an API call to get the price estimate
+    await new Promise(resolve => setTimeout(resolve, 1000)); // Simulating API delay
+
+    // Mock price estimation logic
+    const basePrice = Math.random() * 100 + 20; // Random price between 20 and 120
+    const minPrice = basePrice * 0.9;
+    const maxPrice = basePrice * 1.1;
+
+    setEstimatedPrice({
+      min: minPrice.toFixed(2),
+      max: maxPrice.toFixed(2)
+    });
+
+    setMarketTrend(Math.random() > 0.5 ? "rising" : "falling");
+    setLoading(false);
+  };
 
   return (
-    <div className="grid grid-cols-3 gap-2">
-      {pricedata.map((item, idx) => (
-        <Card key={idx} className="overflow-hidden" x-chunk="dashboard-05-chunk-4">
-          <CardHeader className="flex flex-row items-start bg-muted/50">
-            <div className="grid gap-0.5">
-              <CardTitle className="group flex items-center gap-2 text-lg">
-                {item.name}
-              </CardTitle>
+    <div className="p-4 max-w-4xl mx-auto">
+      <h1 className="text-2xl font-bold mb-4">Price Estimation Tool</h1>
+      <Card>
+        <CardHeader>
+          <CardTitle>Enter Product Details</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={(e) => { e.preventDefault(); handleEstimate(); }} className="space-y-4">
+            <div>
+              <label className="block mb-2">Product Type</label>
+              <Select onValueChange={setProductType} value={productType}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select product type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="fruit">Fruit</SelectItem>
+                  <SelectItem value="vegetable">Vegetable</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
+            <div>
+              <label className="block mb-2">Product Name</label>
+              <Input
+                type="text"
+                placeholder="e.g., Tomatoes, Apples"
+                value={productName}
+                onChange={(e) => setProductName(e.target.value)}
+              />
+            </div>
+            <div className="flex space-x-4">
+              <div className="flex-1">
+                <label className="block mb-2">Quantity</label>
+                <Input
+                  type="number"
+                  placeholder="Enter quantity"
+                  value={quantity}
+                  onChange={(e) => setQuantity(e.target.value)}
+                />
+              </div>
+              <div>
+                <label className="block mb-2">Unit</label>
+                <Select onValueChange={setUnit} value={unit}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select unit" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="kg">Kg</SelectItem>
+                    <SelectItem value="ton">Ton</SelectItem>
+                    <SelectItem value="piece">Piece</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? "Estimating..." : "Get Price Estimate"}
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
+
+      {estimatedPrice && (
+        <Card className="mt-6">
+          <CardHeader>
+            <CardTitle>Estimated Price Range</CardTitle>
           </CardHeader>
-          <CardContent className="p-6 text-sm">
-            <div className="grid gap-3">
-              <div className="font-semibold">Price Details</div>
-              <ul className="grid gap-3">
-                <li className="flex items-center justify-between">
-                  <span className="text-muted-foreground">Mall Price Range:</span>
-                  <span>{item.mallPriceRange}</span>
-                </li>
-                <li className="flex items-center justify-between">
-                  <span className="text-muted-foreground">Market Price</span>
-                  <span>{item.marketPrice}</span>
-                </li>
-              </ul>
-              <ul className="grid gap-3">
-                <li className="flex items-center justify-between">
-                  <span className="text-muted-foreground">Retail Price Range</span>
-                  <span>{item.retailPriceRange}</span>
-                </li>
-                <li className="flex items-center justify-between">
-                  <span className="text-muted-foreground">Unit</span>
-                  <span>{item.unit}</span>
-                </li>
-              </ul>
+          <CardContent>
+            <div className="text-3xl font-bold text-center">
+              ₹{estimatedPrice.min} - ₹{estimatedPrice.max} per {unit}
+            </div>
+            <div className="flex items-center justify-center mt-4">
+              <TrendingUp className={`mr-2 ${marketTrend === 'rising' ? 'text-green-500' : 'text-red-500'}`} />
+              <span className={marketTrend === 'rising' ? 'text-green-500' : 'text-red-500'}>
+                Market trend: {marketTrend === 'rising' ? 'Rising' : 'Falling'}
+              </span>
+            </div>
+            <div className="mt-4 text-sm text-gray-600">
+              Note: This is an estimated range based on current market trends. Actual prices may vary.
             </div>
           </CardContent>
         </Card>
-      ))}
+      )}
     </div>
   );
 }

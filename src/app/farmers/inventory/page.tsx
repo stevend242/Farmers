@@ -11,6 +11,59 @@ import { Label } from "~/components/ui/label"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table"
 
 export default function Page() {
+
+  const initialData = [
+    {
+      name: "Organic Tomatoes",
+      description: "Fresh, locally grown organic tomatoes",
+      price: "2.99",
+      stock: "100",
+      unit: "kg",
+      expiry: "2023-12-15",
+      yield: "2023-11-01",
+      image: "https://images.unsplash.com/photo-1607305387299-a3ebc7c59693?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+    },
+    {
+      name: "Free-range Eggs",
+      description: "Farm-fresh free-range eggs",
+      price: "3.99",
+      stock: "50",
+      unit: "dozen",
+      expiry: "2023-12-20",
+      yield: "2023-11-05",
+      image: "https://images.unsplash.com/photo-1598965402089-897ce52e8355?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1160&q=80",
+    },
+    {
+      name: "Organic Apples",
+      description: "Crisp and sweet organic apples",
+      price: "1.99",
+      stock: "200",
+      unit: "kg",
+      expiry: "2024-01-01",
+      yield: "2023-11-15",
+      image: "https://images.unsplash.com/photo-1619546813926-a78fa6372cd2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+    },
+    {
+      name: "Organic Carrots",
+      description: "Fresh, crunchy organic carrots",
+      price: "1.49",
+      stock: "150",
+      unit: "kg",
+      expiry: "2023-12-30",
+      yield: "2023-11-10",
+      image: "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80",
+    },
+    {
+      name: "Grass-fed Milk",
+      description: "Fresh milk from grass-fed cows",
+      price: "4.99",
+      stock: "75",
+      unit: "liter",
+      expiry: "2023-12-10",
+      yield: "2023-11-01",
+      image: "https://images.unsplash.com/photo-1550583724-b2692b85b150?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80",
+    },
+  ];
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
@@ -19,7 +72,7 @@ export default function Page() {
   const [expiry, setExpiry] = useState('');
   const [yield1, setYield] = useState('');
   const [img, setImg] = useState(null);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(initialData);
 
   const handleSubmit = () => {
     // Create a new product object

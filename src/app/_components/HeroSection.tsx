@@ -26,7 +26,7 @@ export function HeroSection() {
       <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-black/30" />
       <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-4">
         <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 drop-shadow-lg">
-          Welcome to AgroTech
+          Welcome to Farm Connect
         </h1>
         <p className="text-xl md:text-2xl text-white mb-8 max-w-2xl drop-shadow-md">
           Connecting Farmers Directly with Buyers for Fresh, Local Produce

@@ -1,19 +1,24 @@
-"use client"
-import { useState, useEffect } from 'react';
+"use client";
+import { useState, ChangeEvent, FormEvent } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { Button } from "~/components/ui/button";
 import { ArrowRight, TrendingUp, DollarSign } from 'lucide-react';
 
+interface EstimatedPrice {
+  min: string;
+  max: string;
+}
+
 export default function Page() {
-  const [productType, setProductType] = useState("");
-  const [productName, setProductName] = useState("");
-  const [quantity, setQuantity] = useState("");
-  const [unit, setUnit] = useState("kg");
-  const [estimatedPrice, setEstimatedPrice] = useState(null);
-  const [marketTrend, setMarketTrend] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [productType, setProductType] = useState<string>("");
+  const [productName, setProductName] = useState<string>("");
+  const [quantity, setQuantity] = useState<string>("");
+  const [unit, setUnit] = useState<string>("kg");
+  const [estimatedPrice, setEstimatedPrice] = useState<EstimatedPrice | null>(null);
+  const [marketTrend, setMarketTrend] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleEstimate = async () => {
     setLoading(true);
@@ -42,7 +47,7 @@ export default function Page() {
           <CardTitle>Enter Product Details</CardTitle>
         </CardHeader>
         <CardContent>
-          <form onSubmit={(e) => { e.preventDefault(); handleEstimate(); }} className="space-y-4">
+          <form onSubmit={(e: FormEvent) => { e.preventDefault(); handleEstimate(); }} className="space-y-4">
             <div>
               <label className="block mb-2">Product Type</label>
               <Select onValueChange={setProductType} value={productType}>
@@ -61,7 +66,7 @@ export default function Page() {
                 type="text"
                 placeholder="e.g., Tomatoes, Apples"
                 value={productName}
-                onChange={(e) => setProductName(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setProductName(e.target.value)}
               />
             </div>
             <div className="flex space-x-4">
@@ -71,7 +76,7 @@ export default function Page() {
                   type="number"
                   placeholder="Enter quantity"
                   value={quantity}
-                  onChange={(e) => setQuantity(e.target.value)}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => setQuantity(e.target.value)}
                 />
               </div>
               <div>

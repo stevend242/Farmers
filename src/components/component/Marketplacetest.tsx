@@ -157,31 +157,35 @@ export function Marketplacetest() {
         </div>
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
           <ProductCard
+            id="apples"
             name="Fresh Apples"
             price="$2.99"
             image="https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YXBwbGV8ZW58MHx8MHx8fDA%3D"
             tag="Organic"
           />
           <ProductCard
+            id="bananas"
             name="Ripe Bananas"
-            id="banana"
             price="$1.99"
             image="https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YmFuYW5hfGVufDB8fDB8fHww"
             tag="Fresh"
           />
           <ProductCard
+            id="lettuce"
             name="Crisp Lettuce"
             price="$1.49"
             image="https://images.unsplash.com/photo-1622206151226-18ca2c9ab4a1?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bGV0dHVjZXxlbnwwfHwwfHx8MA%3D%3D"
             tag="Local"
           />
           <ProductCard
+            id="tomatoes"
             name="Juicy Tomatoes"
             price="$2.49"
             image="https://images.unsplash.com/photo-1561136594-7f68413baa99?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dG9tYXRvfGVufDB8fDB8fHww"
             tag="Fresh"
           />
           <ProductCard
+            id="carrots"
             name="Sweet Carrots"
             price="$1.79"
             image="https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2Fycm90fGVufDB8fDB8fHww"
@@ -193,7 +197,15 @@ export function Marketplacetest() {
   )
 }
 
-function ProductCard({ id, name, price, image, tag }) {
+interface ProductCardProps {
+  id: string;
+  name: string;
+  price: string;
+  image: string;
+  tag: string;
+}
+
+function ProductCard({ id, name, price, image, tag }: ProductCardProps) {
   return (
     <div className="rounded-lg border border-green-200 bg-white p-4 shadow-sm transition-all hover:shadow-md dark:border-green-800 dark:bg-gray-900">
       <Link href={`/marketplace/${id}`} className="group relative block overflow-hidden rounded-lg" prefetch={false}>
@@ -228,7 +240,7 @@ function ProductCard({ id, name, price, image, tag }) {
   )
 }
 
-function LeafIcon(props) {
+function LeafIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -248,7 +260,7 @@ function LeafIcon(props) {
   )
 }
 
-function SearchIcon(props) {
+function SearchIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -268,7 +280,7 @@ function SearchIcon(props) {
   )
 }
 
-function ShoppingCartIcon(props) {
+function ShoppingCartIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -289,7 +301,7 @@ function ShoppingCartIcon(props) {
   )
 }
 
-function StarIcon(props) {
+function StarIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -307,5 +319,3 @@ function StarIcon(props) {
     </svg>
   )
 }
-
-// SearchIcon, ShoppingCartIcon, and StarIcon remain the same as in the original code

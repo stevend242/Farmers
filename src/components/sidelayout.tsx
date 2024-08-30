@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import {
   DollarSign,
   LineChart,
@@ -11,7 +11,6 @@ import {
   User,
 } from "lucide-react";
 import Link from "next/link";
-
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -21,24 +20,27 @@ import {
   BreadcrumbSeparator,
 } from "~/components/ui/breadcrumb";
 import { Button } from "~/components/ui/button";
-
-
-
 import { SignUpButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { usePathname, useRouter } from "next/navigation";
 import { ReactNode } from "react";
 import { Sheet, SheetTrigger } from "~/components/ui/sheet";
+
+interface NavItem {
+  href: string;
+  label: string;
+  icon: JSX.Element;
+}
 
 interface SideLayoutProps {
   children: ReactNode;
 }
 
 export default function SideLayout({ children }: SideLayoutProps) {
-  const router = useRouter()
-  const pathname = usePathname()
-  const splitpath = pathname.split("/")
-  console.log(pathname)
-  const navList = [
+  const router = useRouter();
+  const pathname: string | null = usePathname();
+  const splitPath: string[] = pathname?.split("/") ?? [];
+
+  const navList: NavItem[] = [
     {
       href: '/farmers',
       label: 'Profile',
@@ -68,7 +70,8 @@ export default function SideLayout({ children }: SideLayoutProps) {
       href: '/farmers/price',
       label: 'Price Estimation',
       icon: <DollarSign className="h-4 w-4" />,
-    }, {
+    },
+    {
       href: '/farmers/gitag',
       label: 'GI Tag',
       icon: <Tag className="h-4 w-4" />,
@@ -82,7 +85,7 @@ export default function SideLayout({ children }: SideLayoutProps) {
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
             <Link href="/" className="flex items-center gap-2 font-semibold">
               <Package2 className="h-6 w-6" />
-              <span className="">Framers Inc</span>
+              <span>Framers Inc</span>
             </Link>
           </div>
           <div className="flex-1">
@@ -99,28 +102,11 @@ export default function SideLayout({ children }: SideLayoutProps) {
                 </Link>
               ))}
             </nav>
-
-          </div>
-          <div className="mt-auto p-4">
-            {/* <Card x-chunk="dashboard-02-chunk-0">
-              <CardHeader className="p-2 pt-0 md:p-4">
-                <CardTitle>Upgrade to Pro</CardTitle>
-                <CardDescription>
-                  Unlock all features and get unlimited access to our support
-                  team.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
-                <Button size="sm" className="w-full">
-                  Upgrade
-                </Button>
-              </CardContent>
-            </Card> */}
           </div>
         </div>
       </div>
       <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-8">
-        <header className="sticky top-0 z-30 flex h-14 items-center gap-4  border-b bg-muted/40 px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
+        <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-muted/40 px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
           <Sheet>
             <SheetTrigger asChild>
               <Button size="icon" variant="outline" className="sm:hidden">
@@ -138,13 +124,19 @@ export default function SideLayout({ children }: SideLayoutProps) {
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbPage>{pathname === "/farmers" ? "" : splitpath[2].charAt(0).toUpperCase() +
-                  splitpath[2].slice(1)}</BreadcrumbPage>
+              <BreadcrumbPage>
+  {pathname === "/farmers" 
+    ? "" 
+    : splitPath[2] 
+      ? splitPath[2].charAt(0).toUpperCase() + splitPath[2].slice(1) 
+      : ""
+  }
+</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
           <div className="relative ml-auto flex-1 md:grow-0">
-
+            {/* Optional: Add content here if needed */}
           </div>
           <SignedOut>
             <SignUpButton />
@@ -158,5 +150,5 @@ export default function SideLayout({ children }: SideLayoutProps) {
         </main>
       </div>
     </div>
-  )
+  );
 }

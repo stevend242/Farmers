@@ -9,6 +9,11 @@ import {
   ShoppingCart,
   Tag,
   User,
+  FileText,
+  ChevronDown,
+  Plus,
+  FileUp,
+  HelpingHand,
 } from "lucide-react";
 import Link from "next/link";
 import {
@@ -22,13 +27,14 @@ import {
 import { Button } from "~/components/ui/button";
 import { SignUpButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { usePathname, useRouter } from "next/navigation";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { Sheet, SheetTrigger } from "~/components/ui/sheet";
 
 interface NavItem {
   href: string;
   label: string;
   icon: JSX.Element;
+  subItems?: NavItem[];
 }
 
 interface SideLayoutProps {
@@ -36,9 +42,12 @@ interface SideLayoutProps {
 }
 
 export default function SideLayout({ children }: SideLayoutProps) {
+
+
   const router = useRouter();
   const pathname: string | null = usePathname();
   const splitPath: string[] = pathname?.split("/") ?? [];
+  const [cmsDropdownOpen, setCmsDropdownOpen] = useState(false);
 
   const navList: NavItem[] = [
     {
@@ -76,6 +85,22 @@ export default function SideLayout({ children }: SideLayoutProps) {
       label: 'GI Tag',
       icon: <Tag className="h-4 w-4" />,
     },
+    {
+      href: '/farmers/crop_advisor',
+      label: 'Crop Advisor',
+      icon: <HelpingHand className="h-4 w-4" />,
+    },
+
+    {
+      href: '#',
+      label: 'CMS',
+      icon: <FileText className="h-4 w-4" />,
+      subItems: [
+        { href: '/farmers/cms/add', label: 'Add Contracts', icon: <Plus className="h-4 w-4" /> },
+        { href: '/farmers/cms/contracts', label: 'View Contracts', icon: <FileUp className="h-4 w-4" /> },
+        { href: '/farmers/cms/', label: 'Analytics', icon: <LineChart className="h-4 w-4" /> },
+      ],
+    },
   ];
 
   return (
@@ -91,15 +116,46 @@ export default function SideLayout({ children }: SideLayoutProps) {
           <div className="flex-1">
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
               {navList.map((item) => (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${pathname === item.href ? 'bg-muted text-primary' : ''
-                    }`}
-                >
-                  {item.icon}
-                  {item.label}
-                </Link>
+                item.subItems ? (
+                  <div key={item.label}>
+                    <button
+                      onClick={() => setCmsDropdownOpen(!cmsDropdownOpen)}
+                      className={`flex items-center justify-between w-full gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${pathname?.startsWith(item.href) ? 'bg-muted text-primary' : ''
+                        }`}
+                    >
+                      <span className="flex items-center gap-3">
+                        {item.icon}
+                        {item.label}
+                      </span>
+                      <ChevronDown className={`h-4 w-4 transition-transform ${cmsDropdownOpen ? 'rotate-180' : ''}`} />
+                    </button>
+                    {cmsDropdownOpen && (
+                      <div className="ml-6 mt-2 space-y-2">
+                        {item.subItems.map((subItem) => (
+                          <Link
+                            key={subItem.label}
+                            href={subItem.href}
+                            className={`flex items-center gap-3 rounded-lg px-3 py-1 text-muted-foreground transition-all hover:text-primary ${pathname === subItem.href ? 'bg-muted text-primary' : ''
+                              }`}
+                          >
+                            {subItem.icon}
+                            {subItem.label}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${pathname === item.href ? 'bg-muted text-primary' : ''
+                      }`}
+                  >
+                    {item.icon}
+                    {item.label}
+                  </Link>
+                )
               ))}
             </nav>
           </div>
@@ -124,14 +180,14 @@ export default function SideLayout({ children }: SideLayoutProps) {
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-              <BreadcrumbPage>
-  {pathname === "/farmers" 
-    ? "" 
-    : splitPath[2] 
-      ? splitPath[2].charAt(0).toUpperCase() + splitPath[2].slice(1) 
-      : ""
-  }
-</BreadcrumbPage>
+                <BreadcrumbPage>
+                  {pathname === "/farmers"
+                    ? ""
+                    : splitPath[2]
+                      ? splitPath[2].charAt(0).toUpperCase() + splitPath[2].slice(1)
+                      : ""
+                  }
+                </BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>

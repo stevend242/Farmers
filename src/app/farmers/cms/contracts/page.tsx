@@ -22,7 +22,7 @@ import { useRouter } from "next/navigation"
 export default function Component() {
   const router = useRouter()
   return (
-    <Card>
+    <Card >
       <CardHeader className="px-7">
         <CardTitle>Contracts</CardTitle>
         <CardDescription>Recent contracts from your store.</CardDescription>

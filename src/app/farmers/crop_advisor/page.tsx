@@ -7,7 +7,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "~/com
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert"
 import { askAi } from '~/server/action/actions';
 import { Cloud, Droplets, Wind, Thermometer } from 'lucide-react';
-
+import Markdown from "react-markdown"
 export default function AgroClimateAdvisor() {
   const [location, setLocation] = useState('');
   const [weather, setWeather] = useState(null);
@@ -160,7 +160,7 @@ export default function AgroClimateAdvisor() {
             <CardTitle className="text-2xl font-bold">Crop Recommendations</CardTitle>
           </CardHeader>
           <CardContent className="p-6">
-            <p className="text-gray-700 whitespace-pre-wrap">{cropAdvice}</p>
+            <p className="text-gray-700 whitespace-pre-wrap"><Markdown>{cropAdvice}</Markdown></p>
           </CardContent>
         </Card>
       )}

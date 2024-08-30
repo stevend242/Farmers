@@ -14,6 +14,7 @@ import {
   Plus,
   FileUp,
   HelpingHand,
+  BadgeInfo,
 } from "lucide-react";
 import Link from "next/link";
 import {
@@ -86,11 +87,15 @@ export default function SideLayout({ children }: SideLayoutProps) {
       icon: <Tag className="h-4 w-4" />,
     },
     {
-      href: '/farmers/crop_advisor',
+      href: '/farmers/crop advisor',
       label: 'Crop Advisor',
+      icon: <BadgeInfo className="h-4 w-4" />,
+    },
+    {
+      href: '/farmers/crop doc',
+      label: 'Crop Doctor',
       icon: <HelpingHand className="h-4 w-4" />,
     },
-
     {
       href: '#',
       label: 'CMS',

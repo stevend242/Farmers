@@ -1,16 +1,46 @@
 "use client"
 
-import React, { useState } from 'react';
-import { Button } from "~/components/ui/button"
-import { Input } from "~/components/ui/input"
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "~/components/ui/card"
-import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert"
+import { Cloud, Droplets, Thermometer, Wind } from 'lucide-react';
+import { useState } from 'react';
+import Markdown from "react-markdown";
+import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
+import { Button } from "~/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
+import { Input } from "~/components/ui/input";
 import { askAi } from '~/server/action/actions';
-import { Cloud, Droplets, Wind, Thermometer } from 'lucide-react';
-import Markdown from "react-markdown"
+
+// Define interfaces for the weather data
+interface CurrentWeather {
+  temperature_2m: number;
+  relative_humidity_2m: number;
+  wind_speed_10m: number;
+  weather_code: number;
+}
+
+interface DailyForecast {
+  temperature_2m_max: number[];
+  temperature_2m_min: number[];
+  precipitation_probability_max: number[];
+}
+
+interface WeatherData {
+  current: CurrentWeather;
+  daily: DailyForecast;
+}
+
+// Define interface for geolocation data
+interface GeoData {
+  lat: string;
+  lon: string;
+  display_name: string;
+}
+
+// Update the askAi function type in your action file
+// export const askAi: (prompt: string) => Promise<string>;
+
 export default function AgroClimateAdvisor() {
   const [location, setLocation] = useState('');
-  const [weather, setWeather] = useState(null);
+  const [weather, setWeather] = useState<WeatherData | null>(null);
   const [cropAdvice, setCropAdvice] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -20,31 +50,36 @@ export default function AgroClimateAdvisor() {
     setError('');
     try {
       const geoResponse = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(location)}`);
-      const geoData = await geoResponse.json();
+      const geoData = await geoResponse.json() as GeoData[];
 
       if (geoData.length === 0) {
         throw new Error('Location not found');
       }
 
-      const { lat, lon } = geoData[0];
+      const firstLocation = geoData[0];
+      if (!firstLocation?.lat || !firstLocation.lon) {
+        throw new Error('Invalid location data received');
+      }
+
+      const { lat, lon } = firstLocation;
 
       const weatherResponse = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto`);
-      const weatherData = await weatherResponse.json();
+      const weatherData = await weatherResponse.json() as WeatherData;
 
       if (weatherResponse.ok) {
         setWeather(weatherData);
-        getCropAdvice(weatherData, geoData[0].display_name);
+        await getCropAdvice(weatherData, firstLocation.display_name);
       } else {
-        setError('Failed to fetch weather data. Please try again.');
+        throw new Error('Failed to fetch weather data');
       }
     } catch (err) {
-      setError(err.message || 'An error occurred while fetching weather data.');
+      setError((err as Error).message ?? 'An error occurred while fetching data');
     } finally {
       setLoading(false);
     }
   };
 
-  const getCropAdvice = async (weatherData, locationName) => {
+  const getCropAdvice = async (weatherData: WeatherData, locationName: string) => {
     try {
       const currentWeather = weatherData.current;
       const dailyForecast = weatherData.daily;
@@ -70,8 +105,8 @@ export default function AgroClimateAdvisor() {
     }
   };
 
-  const getWeatherDescription = (code) => {
-    const weatherCodes = {
+  const getWeatherDescription = (code: number): string => {
+    const weatherCodes: Record<number, string> = {
       0: 'Clear sky',
       1: 'Mainly clear',
       2: 'Partly cloudy',
@@ -89,7 +124,7 @@ export default function AgroClimateAdvisor() {
       75: 'Heavy snow fall',
       95: 'Thunderstorm',
     };
-    return weatherCodes[code] || 'Unknown';
+    return weatherCodes[code] ?? 'Unknown';
   };
 
   return (
@@ -143,7 +178,7 @@ export default function AgroClimateAdvisor() {
                   <span>{weather.current.wind_speed_10m} m/s</span>
                 </div>
               </div>
-              <h3 className="text-xl font-semibold text-blue-700 mt-4">Today's Forecast</h3>
+              <h3 className="text-xl font-semibold text-blue-700 mt-4">Todays Forecast</h3>
               <div className="grid grid-cols-2 gap-4">
                 <div>Max Temp: {weather.daily.temperature_2m_max[0]}°C</div>
                 <div>Min Temp: {weather.daily.temperature_2m_min[0]}°C</div>

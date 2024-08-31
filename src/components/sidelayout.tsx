@@ -1,22 +1,25 @@
 "use client";
+import { SignUpButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import {
+  BadgeInfo,
+  ChevronDown,
   DollarSign,
+  FileText,
+  FileUp,
+  HelpingHand,
   LineChart,
   MessageCircleMore,
   Package,
   Package2,
   PanelLeft,
+  Plus,
   ShoppingCart,
   Tag,
   User,
-  FileText,
-  ChevronDown,
-  Plus,
-  FileUp,
-  HelpingHand,
-  BadgeInfo,
 } from "lucide-react";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { ReactNode, useState } from "react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -26,9 +29,6 @@ import {
   BreadcrumbSeparator,
 } from "~/components/ui/breadcrumb";
 import { Button } from "~/components/ui/button";
-import { SignUpButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import { usePathname, useRouter } from "next/navigation";
-import { ReactNode, useState } from "react";
 import { Sheet, SheetTrigger } from "~/components/ui/sheet";
 
 interface NavItem {
@@ -55,6 +55,16 @@ export default function SideLayout({ children }: SideLayoutProps) {
       href: '/farmers',
       label: 'Profile',
       icon: <User className="h-4 w-4" />,
+    },
+    {
+      href: '#',
+      label: 'CMS',
+      icon: <FileText className="h-4 w-4" />,
+      subItems: [
+        { href: '/farmers/cms/add', label: 'Add Contracts', icon: <Plus className="h-4 w-4" /> },
+        { href: '/farmers/cms/contracts', label: 'View Contracts', icon: <FileUp className="h-4 w-4" /> },
+        { href: '/farmers/cms/', label: 'Analytics', icon: <LineChart className="h-4 w-4" /> },
+      ],
     },
     {
       href: '/farmers/inventory',
@@ -87,25 +97,16 @@ export default function SideLayout({ children }: SideLayoutProps) {
       icon: <Tag className="h-4 w-4" />,
     },
     {
-      href: '/farmers/crop advisor',
+      href: '/farmers/crop_advisor',
       label: 'Crop Advisor',
       icon: <BadgeInfo className="h-4 w-4" />,
     },
     {
-      href: '/farmers/crop doc',
+      href: '/farmers/crop_doc',
       label: 'Crop Doctor',
       icon: <HelpingHand className="h-4 w-4" />,
     },
-    {
-      href: '#',
-      label: 'CMS',
-      icon: <FileText className="h-4 w-4" />,
-      subItems: [
-        { href: '/farmers/cms/add', label: 'Add Contracts', icon: <Plus className="h-4 w-4" /> },
-        { href: '/farmers/cms/contracts', label: 'View Contracts', icon: <FileUp className="h-4 w-4" /> },
-        { href: '/farmers/cms/', label: 'Analytics', icon: <LineChart className="h-4 w-4" /> },
-      ],
-    },
+   
   ];
 
   return (

@@ -1,6 +1,7 @@
 import { ClerkProvider } from '@clerk/nextjs';
 import Script from 'next/script';
 import Translate from '~/components/translate';
+import { Toaster } from '~/components/ui/toaster';
 
 import '~/styles/globals.css';
 import { TRPCReactProvider } from '~/trpc/react';
@@ -31,6 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <body>
           <Translate />
           <TRPCReactProvider>{children}</TRPCReactProvider>
+          <Toaster />
         </body>
       </html>
     </ClerkProvider>

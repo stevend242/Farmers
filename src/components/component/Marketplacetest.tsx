@@ -8,11 +8,21 @@ import { Button } from "~/components/ui/button"
 import { Checkbox } from "~/components/ui/checkbox"
 import { Input } from "~/components/ui/input"
 import { Label } from "~/components/ui/label"
+import { useToast } from "../ui/use-toast"
 const ProductCard = ({ id, name, price, image, tag, unit }) => {
   const [quantity, setQuantity] = useState(1);
+  const { toast } = useToast()
 
   const increaseQuantity = () => setQuantity(prev => prev + 1);
   const decreaseQuantity = () => setQuantity(prev => (prev > 1 ? prev - 1 : 1));
+
+  const handleBulkBuy = () => {
+    toast({
+      title: "Bulk Buy Request",
+      description: `Your request for bulk purchase of ${quantity} ${unit}(s) of ${name} has been received.`,
+      duration: 3000,
+    })
+  }
 
   return (
     <div className="rounded-lg border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800">
@@ -22,7 +32,7 @@ const ProductCard = ({ id, name, price, image, tag, unit }) => {
         <p className="mb-2 text-sm text-gray-700 dark:text-gray-300">Price: {price} per {unit}</p>
         <span className="mb-2 inline-block rounded-full bg-green-100 px-2 py-1 text-xs font-semibold text-green-800">{tag}</span>
         <div className="mt-4 flex items-center">
-          <Button variant="outline" size="icon" onClick={decreaseQuantity}><Minus className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" onClick={() => decreaseQuantity}><Minus className="h-4 w-4" /></Button>
           <Input
             type="number"
             value={quantity}
@@ -30,10 +40,9 @@ const ProductCard = ({ id, name, price, image, tag, unit }) => {
             className="mx-2 w-20 text-center"
           />
           <Button variant="outline" size="icon" onClick={increaseQuantity}><Plus className="h-4 w-4" /></Button>
-          <Button variant={"outline"} className="ml-4 bg-blue-600 text-white">
+          <Button variant="outline" className="ml-4 bg-blue-600 text-white" onClick={handleBulkBuy}>
             <DollarSign className="mr-2 h-4 w-4" /> Buy in Bulk
           </Button>
-
         </div>
 
         <Button className="mt-4 w-full">
